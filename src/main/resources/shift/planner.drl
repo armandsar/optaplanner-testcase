@@ -1,0 +1,57 @@
+package hr.cake.autofill.planner;
+
+import shift.domain.ShiftAssignment;
+import shift.domain.Employee;
+import shift.domain.WorkloadRequirement;
+import org.optaplanner.core.api.score.buildin.hardsoftlong.HardSoftLongScoreHolder;
+
+global HardSoftLongScoreHolder scoreHolder;
+
+
+rule "workload not achieved"
+    when
+        WorkloadRequirement($date : date, $load : load, $hour : hour, $part: part)
+
+        $is : Number( doubleValue < $load ) from accumulate(
+                            $sa : ShiftAssignment(shift != null, date == $date, isUsefulLoad($hour, $part)),
+                            sum($sa.getUsefulLoad())
+                        )
+
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -100 * ($load - $is.intValue()));
+end
+
+rule "useful workload exceeding"
+    when
+        WorkloadRequirement(load != 0, $date : date, $load : load, $hour : hour, $part: part)
+
+        $is : Number( intValue > $load ) from accumulate(
+                            $sa : ShiftAssignment(shift != null, date == $date, isUsefulLoad($hour, $part)),
+                            sum($sa.getUsefulLoad())
+                        )
+
+    then
+        scoreHolder.addSoftConstraintMatch(kcontext, -(Math.abs($load - $is.intValue()) * 1000 / $load));
+end
+
+rule "contract hours filled more"
+    when
+        $employee : Employee(contractHours != null)
+        $is : Number( doubleValue > $employee.contractHours ) from accumulate(
+                                    $sa : ShiftAssignment(shift != null, employee == $employee),
+                                    sum($sa.getShift().getTotalHours())
+                                )
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -Math.abs($employee.getContractHours() - $is.intValue()));
+end
+
+rule "contract hours filled less"
+    when
+        $employee : Employee(contractHours != null)
+        $is : Number( doubleValue < $employee.contractHours ) from accumulate(
+                                    $sa : ShiftAssignment(shift != null, employee == $employee),
+                                    sum($sa.getShift().getTotalHours())
+                                )
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, 2 * -Math.abs($employee.getContractHours() - $is.intValue()));
+end
