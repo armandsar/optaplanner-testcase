@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plannerBenchmark>
+    <benchmarkDirectory>local/data/shift</benchmarkDirectory>
+    <warmUpSecondsSpentLimit>30</warmUpSecondsSpentLimit>
+
+    <inheritedSolverBenchmark>
+        <problemBenchmarks>
+            <xStreamAnnotatedClass>shift.Planner</xStreamAnnotatedClass>
+            <inputSolutionFile>data/shift/unsolved/1.xml</inputSolutionFile>
+<!--            <inputSolutionFile>data/shift/unsolved/2.xml</inputSolutionFile>-->
+            <problemStatisticType>BEST_SCORE</problemStatisticType>
+        </problemBenchmarks>
+        <solver>
+            <scanAnnotatedClasses/>
+            <scoreDirectorFactory>
+                <scoreDrl>shift/planner.drl</scoreDrl>
+                <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
+            </scoreDirectorFactory>
+            <termination>
+                <minutesSpentLimit>1</minutesSpentLimit>
+            </termination>
+        </solver>
+    </inheritedSolverBenchmark>
+
+    <solverBenchmarkBluePrint>
+        <solverBenchmarkBluePrintType>EVERY_CONSTRUCTION_HEURISTIC_TYPE_WITH_EVERY_LOCAL_SEARCH_TYPE</solverBenchmarkBluePrintType>
+    </solverBenchmarkBluePrint>
+</plannerBenchmark>

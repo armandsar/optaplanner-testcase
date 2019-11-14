@@ -3,6 +3,8 @@ package shift;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.optaplanner.benchmark.api.PlannerBenchmark;
+import org.optaplanner.benchmark.api.PlannerBenchmarkFactory;
 import shift.domain.Employee;
 import shift.domain.Shift;
 import shift.domain.WorkloadRequirement;
@@ -11,6 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlannerTests {
+
+    @Test
+
+    public void bench() {
+        PlannerBenchmarkFactory plannerBenchmarkFactory = PlannerBenchmarkFactory.createFromXmlResource(
+                "shift/benchmarkConfig.xml");
+        PlannerBenchmark plannerBenchmark = plannerBenchmarkFactory.buildPlannerBenchmark();
+        plannerBenchmark.benchmark();
+    }
 
     @Test
     public void basic() {

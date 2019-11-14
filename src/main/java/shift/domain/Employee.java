@@ -1,5 +1,8 @@
 package shift.domain;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("Employee")
 public class Employee {
     private Integer id;
     private String name;

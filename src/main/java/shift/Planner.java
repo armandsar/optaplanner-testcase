@@ -1,5 +1,6 @@
 package shift;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
 import org.optaplanner.core.api.domain.solution.PlanningScore;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -16,7 +17,7 @@ import shift.domain.WorkloadRequirement;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@XStreamAlias("Planner")
 @PlanningSolution
 public class Planner {
     private HardSoftLongScore score;

@@ -1,5 +1,9 @@
 package shift.domain;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("WorkloadRequirement")
+
 public class WorkloadRequirement {
 
     private Integer hour;

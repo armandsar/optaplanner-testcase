@@ -1,5 +1,8 @@
 package shift.domain;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+@XStreamAlias("Shift")
 public class Shift {
 
     private Integer id;
